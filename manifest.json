@@ -3,12 +3,11 @@
     "name": "onboard tool",
     "version": "1.0",
     "browser_action": {
-        "default_title": "onboard",
-        "default_popup": "index.html"
+        "default_title": "onboard"
     },
     "background": {
-    "page":"background/dist/index.html"
-  },
+        "page": "background/dist/index.html"
+    },
     "permissions": [
         "contextMenus",
         "activeTab",
@@ -28,9 +27,6 @@
                 "content/dist/main.bundle.js"
             ]
         }
-    ],
-    "web_accessible_resources": [
-        "overlay.html"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

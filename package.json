@@ -2,12 +2,11 @@
   "name": "onboard",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start:c": "cd content && ng serve",
     "start:b": "cd background && ng serve",
-    "build:c": "cd content && ng build",
-    "build:b": "cd background && ng build"
+    "build:c": "cd content && ng build --prod",
+    "build:b": "cd background && ng build --prod -bh /background/dist/"
   },
   "author": "kranthi veeramachaneni",
   "license": "ISC"
