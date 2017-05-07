@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+    "name": "onboard tool",
+    "version": "1.0",
+    "browser_action": {
+        "default_title": "onboard",
+        "default_popup": "index.html"
+    },
+    "background": {
+    "page":"background/dist/index.html"
+  },
+    "permissions": [
+        "contextMenus",
+        "activeTab",
+        "tabs"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*"
+            ],
+            "run_at": "document_end",
+            "js": [
+                "content/dist/inline.bundle.js",
+                "content/dist/polyfills.bundle.js",
+                "content/dist/styles.bundle.js",
+                "content/dist/vendor.bundle.js",
+                "content/dist/main.bundle.js"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "overlay.html"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

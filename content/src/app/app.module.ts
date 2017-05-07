@@ -2,19 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
+import { JourneyDialogComponent } from './components/journey-dialog/journey-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JourneyDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    BrowserAnimationsModule,
+    MaterialModule.forRoot()
   ],
+  entryComponents:[JourneyDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(){
+    let rootDiv = document.createElement('onBoard-root');
+    rootDiv.textContent = ".....Loading!!!";
+    document.body.appendChild(rootDiv);
+  }
+}

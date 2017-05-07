@@ -1,0 +1,40 @@
+<form class="form" #journeyDialog="ngForm">
+  <md-input-container class="full-width">
+    <label for="journey-id">Target
+    <input id="journey-id" mdInput disabled [value]="data.id">
+    </label>
+  </md-input-container>
+  <p>
+    <md-input-container class="full-width">
+      <input mdInput placeholder="Title" [(ngModel)]="data.title" name="data.title">
+    </md-input-container>
+  </p>
+
+  <p>
+    <md-input-container class="full-width">
+      <textarea mdInput placeholder="Content" required [(ngModel)]="data.content" name="data.content"></textarea>
+    </md-input-container>
+  </p>
+
+  <p>
+    <md-input-container class="full-width">
+      <label for="journey-target">Target
+      <input id="journey-target" mdInput [value]="data.target" name="data.target" disabled>
+      </label>
+    </md-input-container>
+  </p>
+
+  <p>
+    <label for="">Placement</label>
+    <md-radio-group class="radio-button-group" [(ngModel)]="data.placement" name="data.placement">
+      <md-radio-button class="radio-button" *ngFor="let placement of placements" [value]="placement">
+        {{placement}}
+      </md-radio-button>
+    </md-radio-group>
+  </p>
+</form>
+
+<p>
+  <button md-raised-button (click)="dialogRef.close('cancel')">Cancel</button>
+  <button md-raised-button (click)="dialogRef.close(data)">Save</button>
+</p>
