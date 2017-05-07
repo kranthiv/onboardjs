@@ -19,8 +19,8 @@ export class DownloadService {
       _data = JSON.stringify(data, undefined, 4)
     }
     let blob = new Blob([data], { type: 'text/json' }),
-      e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
+      e = this.document.createEvent('MouseEvents'),
+      a = this.document.createElement('a');
     a.download = fileName;
     a.href = window.URL.createObjectURL(blob);
     a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');

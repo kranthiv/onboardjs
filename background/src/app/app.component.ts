@@ -3,7 +3,6 @@ import * as $ from 'jquery';
 import * as tether from 'tether';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
