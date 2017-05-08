@@ -366,35 +366,35 @@ module.exports = module.exports.toString();
 /***/ 169:
 /***/ (function(module, exports) {
 
-module.exports = "<onboard-header></onboard-header>\n<div class=\"container\">\n    <router-outlet></router-outlet>\n</div>\n<onboard-footer>\n\n</onboard-footer>\n\n"
+module.exports = "<onboard-header></onboard-header>\r\n<div class=\"container\">\r\n    <router-outlet></router-outlet>\r\n</div>\r\n<onboard-footer>\r\n\r\n</onboard-footer>\r\n\r\n"
 
 /***/ }),
 
 /***/ 170:
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"footer\">\n  <div class=\"container\">\n    <p>\n      footer works!\n    </p>\n  </div>\n</footer>"
+module.exports = "<footer class=\"footer\">\r\n  <div class=\"container\">\r\n    <p>\r\n      footer works!\r\n    </p>\r\n  </div>\r\n</footer>"
 
 /***/ }),
 
 /***/ 171:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse\">\n  <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarCollapse\" aria-controls=\"navbarCollapse\"\n    aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n  <a class=\"navbar-brand\" href=\"#\">Onboard</a>\n  <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n    </ul>\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse\">\r\n  <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarCollapse\" aria-controls=\"navbarCollapse\"\r\n    aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n        <span class=\"navbar-toggler-icon\"></span>\r\n      </button>\r\n  <a class=\"navbar-brand\" href=\"#\">Onboard</a>\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\r\n    <ul class=\"navbar-nav mr-auto\">\r\n      <li class=\"nav-item active\">\r\n        <a class=\"nav-link\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>\r\n      </li>\r\n    </ul>\r\n  </div>\r\n</nav>"
 
 /***/ }),
 
 /***/ 172:
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  home works!\n</p>\n"
+module.exports = "<p>\r\n  home works!\r\n</p>\r\n"
 
 /***/ }),
 
 /***/ 173:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <h1>\n    Route not found\n  </h1>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <h1>\r\n    Route not found\r\n  </h1>\r\n</div>\r\n"
 
 /***/ }),
 

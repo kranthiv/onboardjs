@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "core-js": "^2.4.1",
+    "pouchdb": "^6.2.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },
@@ -30,6 +31,7 @@
     "@types/chrome": "0.0.46",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
+    "@types/pouchdb": "^6.1.0",
     "codelyzer": "~2.0.0",
     "dt": "0.0.1",
     "jasmine-core": "~2.5.2",
