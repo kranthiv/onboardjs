@@ -4,7 +4,7 @@ webpackJsonp([1,4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommonService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -50,7 +50,7 @@ CommonService = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(8);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DownloadService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -107,9 +107,65 @@ DownloadService = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagingService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MessagingService = (function () {
+    function MessagingService() {
+    }
+    MessagingService.prototype.initilize = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            try {
+                _this.port = chrome.runtime.connect({ name: "onboard" });
+                resolve(_this.port);
+            }
+            catch (ex) {
+                reject(ex);
+            }
+        });
+    };
+    MessagingService.prototype.sendMessage = function (name, data) {
+        var _this = this;
+        return this.initilize().then(function () {
+            return new Promise(function (resolve, reject) {
+                try {
+                    _this.port.postMessage({ type: name, data: data });
+                    resolve(true);
+                }
+                catch (ex) {
+                    reject(false);
+                }
+            });
+        });
+    };
+    return MessagingService;
+}());
+MessagingService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
+    __metadata("design:paramtypes", [])
+], MessagingService);
+
+//# sourceMappingURL=messaging.service.js.map
+
+/***/ }),
+
+/***/ 103:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_journey__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pouchdb__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pouchdb__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pouchdb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pouchdb__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PouchDBService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -170,12 +226,12 @@ PouchDBService = __decorate([
 
 /***/ }),
 
-/***/ 103:
+/***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(8);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QuerySelectorService; });
@@ -286,7 +342,7 @@ QuerySelectorService = __decorate([
 
 /***/ }),
 
-/***/ 104:
+/***/ 105:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -303,7 +359,7 @@ var environment = {
 
 /***/ }),
 
-/***/ 163:
+/***/ 164:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(23)(false);
@@ -321,7 +377,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 164:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(23)(false);
@@ -339,21 +395,21 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 170:
+/***/ 171:
 /***/ (function(module, exports) {
 
 module.exports = "<button md-fab (click)=\"downloadJourney()\" class=\"static-fab-left\">Save</button>\r\n<button md-fab (click)=\"openDialog()\" class=\"static-fab-right\">Add</button>"
 
 /***/ }),
 
-/***/ 171:
+/***/ 172:
 /***/ (function(module, exports) {
 
 module.exports = "<form class=\"form\" #journeyDialog=\"ngForm\">\r\n  <md-input-container class=\"full-width\">\r\n    <label for=\"journey-id\">Target\r\n    <input id=\"journey-id\" mdInput disabled [value]=\"data.id\">\r\n    </label>\r\n  </md-input-container>\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <input mdInput placeholder=\"Title\" [(ngModel)]=\"data.title\" name=\"data.title\">\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <textarea mdInput placeholder=\"Content\" required [(ngModel)]=\"data.content\" name=\"data.content\"></textarea>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <label for=\"journey-target\">Target\r\n      <input id=\"journey-target\" mdInput [value]=\"data.target\" name=\"data.target\" disabled>\r\n      </label>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <label for=\"\">Placement</label>\r\n    <md-radio-group class=\"radio-button-group\" [(ngModel)]=\"data.placement\" name=\"data.placement\">\r\n      <md-radio-button class=\"radio-button\" *ngFor=\"let placement of placements\" [value]=\"placement\">\r\n        {{placement}}\r\n      </md-radio-button>\r\n    </md-radio-group>\r\n  </p>\r\n</form>\r\n\r\n<p>\r\n  <button md-raised-button (click)=\"dialogRef.close('cancel')\">Cancel</button>\r\n  <button md-raised-button (click)=\"dialogRef.close(data)\">Save</button>\r\n</p>"
 
 /***/ }),
 
-/***/ 225:
+/***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(89);
@@ -365,7 +421,7 @@ module.exports = __webpack_require__(89);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__(35);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JourneyDialogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -399,8 +455,8 @@ var JourneyDialogComponent = (function () {
 JourneyDialogComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Component */])({
         selector: 'app-journey-dialog',
-        template: __webpack_require__(171),
-        styles: [__webpack_require__(164)]
+        template: __webpack_require__(172),
+        styles: [__webpack_require__(165)]
     }),
     __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Optional */])()), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MD_DIALOG_DATA */])),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MdDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MdDialogRef */]) === "function" && _a || Object, Object])
@@ -430,10 +486,10 @@ webpackEmptyContext.id = 88;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(105);
 
 
 
@@ -450,15 +506,16 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_common_service__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_download_service__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__models_step__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__ = __webpack_require__(102);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -481,8 +538,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var AppComponent = (function () {
-    function AppComponent(document, _window, _dialog, _pouchDbService, _downloadService, _commonService, _docQuerySVC) {
+    function AppComponent(document, _window, _dialog, _pouchDbService, _downloadService, _commonService, _docQuerySVC, _msgSVC) {
         this.document = document;
         this._window = _window;
         this._dialog = _dialog;
@@ -490,7 +548,15 @@ var AppComponent = (function () {
         this._downloadService = _downloadService;
         this._commonService = _commonService;
         this._docQuerySVC = _docQuerySVC;
+        this._msgSVC = _msgSVC;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var msg = this._msgSVC.initilize().then(function (port) {
+            _this.msgPort = port;
+            console.log("port details", port);
+        });
+    };
     AppComponent.prototype.openDialog = function () {
         var _this = this;
         var selection = this._window.getSelection();
@@ -503,6 +569,10 @@ var AppComponent = (function () {
         var dialogRef = this._dialog.open(__WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__["a" /* JourneyDialogComponent */], this.config);
         dialogRef.afterClosed().subscribe(function (result) {
             if (result !== null && result !== "cancel") {
+                var response = _this._msgSVC.sendMessage("newJourney", _this.journeyStep);
+                response.then(function (result) {
+                    console.log("save to db", result);
+                });
                 var save = _this._pouchDbService.put(_this.journeyStep.id, _this.journeyStep);
                 save.then(function (result) {
                     console.info("saved to the indexdb");
@@ -529,15 +599,15 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Component */])({
         selector: 'onBoard-root',
-        template: __webpack_require__(170),
-        styles: [__webpack_require__(163)],
-        providers: [__WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */], __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */], __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */], __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */], { provide: Window, useValue: window }]
+        template: __webpack_require__(171),
+        styles: [__webpack_require__(164)],
+        providers: [__WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */], __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */], __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */], __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */], { provide: Window, useValue: window }, __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */]]
     }),
     __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(Window)),
-    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */]) === "function" && _f || Object])
 ], AppComponent);
 
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -547,7 +617,7 @@ var _a, _b, _c, _d, _e;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser_animations__ = __webpack_require__(95);
@@ -674,5 +744,5 @@ var Step = (function () {
 
 /***/ })
 
-},[225]);
+},[226]);
 //# sourceMappingURL=main.bundle.js.map
