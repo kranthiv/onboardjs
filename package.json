@@ -6,7 +6,8 @@
     "start:c": "cd content && ng serve",
     "start:b": "cd background && ng serve",
     "build:c": "cd content && ng build --prod",
-    "build:b": "cd background && ng build --prod -bh /background/dist/"
+    "build:app": "cd onboard && ng build --prod -bh /background/dist/",
+    "build:b": "cd background && webpack"
   },
   "author": "kranthi veeramachaneni",
   "license": "ISC"
