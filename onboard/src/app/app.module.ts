@@ -31,6 +31,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 })
 export class AppModule {
   constructor(private _chromeSVC: ChromeService) {
-    this._chromeSVC.registerBrowserClick();
+    // this._chromeSVC.registerBrowserClick();
   }
 }
