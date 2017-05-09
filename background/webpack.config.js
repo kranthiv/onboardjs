@@ -4,7 +4,7 @@ let webpack = require('webpack');
 module.exports={
     entry:'./src/index.ts',
     output:{
-        filename:'background.js',
+        filename:'[name].js',
         path:__dirname + '/dist'
     },
     devtool:'source-map',

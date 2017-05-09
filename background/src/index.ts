@@ -1,1 +1,4 @@
-console.log("blah blah");
+import {ChromeService} from './services/chrome.service';
+
+let chromeSVC = new ChromeService();
+chromeSVC.initilizeApp();
