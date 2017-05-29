@@ -23,7 +23,9 @@ export class MessagingService {
     return new Promise<any>((resolve, reject) => {
       try {
           chrome.runtime.onConnect.addListener((port)=>{
-            
+            if(port.name === 'onboard'){
+              this.port = port;
+            }
           });
       } catch (ex) {
 

@@ -26,11 +26,11 @@ export class AppComponent implements OnInit {
     , private _downloadService: DownloadService, private _commonService: CommonService, private _docQuerySVC: QuerySelectorService, private _msgSVC: MessagingService) { }
 
   ngOnInit(): void {
-    let msg = this._msgSVC.initilize().then((port) => {
-      this.msgPort = port;
-      console.log("port details", port);
+    let msg = this._msgSVC.receiveMessage();
+    msg.then((port)=>{
+      console.log("successfully connected to background from conent",port);
     });
-
+    msg.catch(error=>console.error("unable to connect the background",error));
   }
 
   private openDialog() {

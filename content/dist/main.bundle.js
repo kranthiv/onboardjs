@@ -135,9 +135,13 @@ var MessagingService = (function () {
         });
     };
     MessagingService.prototype.receiveMessage = function () {
+        var _this = this;
         return new Promise(function (resolve, reject) {
             try {
                 chrome.runtime.onConnect.addListener(function (port) {
+                    if (port.name === 'onboard') {
+                        _this.port = port;
+                    }
                 });
             }
             catch (ex) {
@@ -561,10 +565,13 @@ var AppComponent = (function () {
         this._msgSVC = _msgSVC;
     }
     AppComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        var msg = this._msgSVC.initilize().then(function (port) {
-            _this.msgPort = port;
-            console.log("port details", port);
+        // let msg = this._msgSVC.initilize().then((port) => {
+        //   this.msgPort = port;
+        //   console.log("port details", port);
+        // });
+        var msg = this._msgSVC.receiveMessage();
+        msg.then(function (port) {
+            console.log("successfully connected to background from conent", port);
         });
     };
     AppComponent.prototype.openDialog = function () {
