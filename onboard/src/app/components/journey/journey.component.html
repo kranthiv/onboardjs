@@ -1,0 +1,15 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let step of journey.steps">
+      <th scope="row">{{step.id}}</th>
+      <td>{{step.title}}</td>
+      <td>{{step.content}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,23 @@
+<div class="col-md-12">
+  <div class="card text-center">
+    <div class="card-header">
+      Journey upload
+    </div>
+    <div class="card-block">
+      <h4 class="card-title">Browser json file</h4>
+      <div class="card-text">
+        <form>
+          <div class="form-group">
+            <input type="file" class="form-control-file" (change)="OnChange($event)" id="journey-upload" aria-describedby="fileHelp">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card-footer text-muted ">
+        <div class="float-left col-md-6">steps present in the uploaded journey: <span class="badge badge-default badge-pill">{{journeyCount}}</span></div>
+    <div class="col-md-6 float-right">
+      <button class="btn btn-primary" style="cursor: pointer;" type="button" (click)="onClick()" >Preview</button>
+    </div>
+      </div>
+  </div>
+</div>

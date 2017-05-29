@@ -1,14 +1,12 @@
 import { IBase } from "../interfaces/ibase";
 import { Step } from "./step";
 
-export class Journey implements IBase {
+export class Journey  {
+    rev: string;
+     id: string;
     _id: string;
-    _rev: string;
-    readonly id: string;
     steps: Array<Step>;
-    constructor(id:string,steps:Array<Step>) {
-        this._id = id;
-        this.id = id;
-        this.steps = steps;
+    constructor() {
+        this.steps = new Array<Step>();
     }
 }

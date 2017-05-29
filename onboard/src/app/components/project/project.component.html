@@ -1,0 +1,15 @@
+<div class="col-md-4">
+  <div class="card text-center">
+    <div class="card-header">
+      {{project.title}}
+    </div>
+    <div class="card-block">
+      <h4 class="card-title">Description</h4>
+      <p class="card-text">{{project.Description}}</p>
+      <a class="btn btn-sm btn-primary  float-right" [routerLink]="['/project',project.projectId]">Edit project</a>
+    </div>
+    <div class="card-footer text-muted">
+      <button class="float-left btn btn-link" style="cursor: pointer;" type="button">Journies: <span class="badge badge-default badge-pill">{{project.journeyCount}}</span></button>
+    </div>
+  </div>
+</div>

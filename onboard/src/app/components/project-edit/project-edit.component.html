@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-5">
+    <form>
+      <div class="form-group">
+        <label for="project-title">Title</label>
+        <input type="text" class="form-control" id="project-title" placeholder="Enter Title" [value]="project.title">
+      </div>
+      <div class="form-group">
+        <label for="project-content">Description</label>
+        <textarea class="form-control" id="project-content" placeholder="Please enter content" [value]="project.Description"> </textarea>
+      </div>
+      <div class="form-group">
+        <label for="step-target">Target element</label>
+        <input type="number" class="form-control" id="step-target" [value]="project.journeyCount" disabled>
+      </div>
+      <a class="btn btn-primary  float-left" [routerLink]="['/home']">Back</a>
+      <button type="button" class="btn btn-primary float-right">Save Project</button>
+    </form>
+  </div>
+</div>

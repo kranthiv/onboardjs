@@ -11,6 +11,12 @@ import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ProjectComponent } from './components/project/project.component';
+import { StepComponent } from './components/step/step.component';
+import { ProjectEditComponent } from './components/project-edit/project-edit.component';
+import { ProjectCreateComponent } from './components/project-create/project-create.component';
+import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
+import { JourneyComponent } from './components/journey/journey.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +24,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     HomeComponent,
     FooterComponent,
     HeaderComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ProjectComponent,
+    StepComponent,
+    ProjectEditComponent,
+    ProjectCreateComponent,
+    FileUploaderComponent,
+    JourneyComponent
   ],
   imports: [
     BrowserModule,

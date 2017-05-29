@@ -386,7 +386,7 @@ module.exports = "<button md-fab (click)=\"downloadJourney()\" class=\"static-fa
 /***/ 172:
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\" #journeyDialog=\"ngForm\">\r\n  <md-input-container class=\"full-width\">\r\n    <label for=\"journey-id\">Target\r\n    <input id=\"journey-id\" mdInput disabled [value]=\"data.id\">\r\n    </label>\r\n  </md-input-container>\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <input mdInput placeholder=\"Title\" [(ngModel)]=\"data.title\" name=\"data.title\">\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <textarea mdInput placeholder=\"Content\" required [(ngModel)]=\"data.content\" name=\"data.content\"></textarea>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <label for=\"journey-target\">Target\r\n      <input id=\"journey-target\" mdInput [value]=\"data.target\" name=\"data.target\" disabled>\r\n      </label>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <label for=\"\">Placement</label>\r\n    <md-radio-group class=\"radio-button-group\" [(ngModel)]=\"data.placement\" name=\"data.placement\">\r\n      <md-radio-button class=\"radio-button\" *ngFor=\"let placement of placements\" [value]=\"placement\">\r\n        {{placement}}\r\n      </md-radio-button>\r\n    </md-radio-group>\r\n  </p>\r\n</form>\r\n\r\n<p>\r\n  <button md-raised-button (click)=\"dialogRef.close('cancel')\">Cancel</button>\r\n  <button md-raised-button (click)=\"dialogRef.close(data)\">Save</button>\r\n</p>"
+module.exports = "<form class=\"form\" #journeyDialog=\"ngForm\">\r\n  <md-input-container class=\"full-width\">\r\n    <label for=\"journey-id\">Journey Id\r\n    <input id=\"journey-id\" mdInput disabled [value]=\"data.journeyId\">\r\n    </label>\r\n  </md-input-container>\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <input mdInput placeholder=\"Title\" [(ngModel)]=\"data.title\" name=\"data.title\">\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <textarea mdInput placeholder=\"Content\" required [(ngModel)]=\"data.content\" name=\"data.content\"></textarea>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <md-input-container class=\"full-width\">\r\n      <label for=\"journey-target\">Target\r\n      <input id=\"journey-target\" mdInput [value]=\"data.target\" name=\"data.target\" disabled>\r\n      </label>\r\n    </md-input-container>\r\n  </p>\r\n\r\n  <p>\r\n    <label for=\"\">Placement</label>\r\n    <md-radio-group class=\"radio-button-group\" [(ngModel)]=\"data.placement\" name=\"data.placement\">\r\n      <md-radio-button class=\"radio-button\" *ngFor=\"let placement of placements\" [value]=\"placement\">\r\n        {{placement}}\r\n      </md-radio-button>\r\n    </md-radio-group>\r\n  </p>\r\n</form>\r\n\r\n<p>\r\n  <button md-raised-button (click)=\"dialogRef.close('cancel')\">Cancel</button>\r\n  <button md-raised-button (click)=\"dialogRef.close(data)\">Save</button>\r\n</p>"
 
 /***/ }),
 
@@ -587,6 +587,8 @@ var AppComponent = (function () {
         this._commonService = _commonService;
         this._docQuerySVC = _docQuerySVC;
         this._msgSVC = _msgSVC;
+        this.journeyIdentifier = "";
+        this.journeyIdentifier = "JOURNEY_IDENTIFIER";
     }
     AppComponent.prototype.ngOnInit = function () {
         var msg = this._msgSVC.receiveMessage();
@@ -605,6 +607,12 @@ var AppComponent = (function () {
         var dialogRef = this._dialog.open(__WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__["a" /* JourneyDialogComponent */], this.config);
         dialogRef.afterClosed().subscribe(function (result) {
             if (result !== null && result !== "cancel") {
+                if (!_this._window.sessionStorage.getItem(_this.journeyIdentifier)) {
+                    _this._window.sessionStorage.setItem(_this.journeyIdentifier, _this.journeyStep.journeyId);
+                }
+                else {
+                    _this.journeyStep.journeyId = _this._window.sessionStorage.getItem(_this.journeyIdentifier);
+                }
                 var response = _this._msgSVC.sendMessage("NEW_JOURNEY", _this.journeyStep);
                 response.then(function (result) {
                     console.log("response received from background as save to db ", result);
@@ -616,9 +624,11 @@ var AppComponent = (function () {
         });
     };
     AppComponent.prototype.downloadJourney = function () {
+        var _this = this;
         // let journey = this._pouchDbService.get(this._commonService.parseURI(window.location.href));
-        var journey = this._msgSVC.sendMessage("GET_JOURNEY", this._commonService.parseURI(this._window.location.href));
+        var journey = this._msgSVC.sendMessage("GET_JOURNEY", this._window.sessionStorage.getItem(this.journeyIdentifier));
         journey.then(function (result) {
+            _this._window.sessionStorage.removeItem(_this.journeyIdentifier);
             console.log("download soon", result);
         });
     };

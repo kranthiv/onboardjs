@@ -9,6 +9,7 @@ import { Step } from "./models/step";
 import { JourneyDialogComponent } from './components/journey-dialog/journey-dialog.component';
 import { MessagingService } from "./services/messaging.service";
 declare let chrome: any;
+
 @Component({
   selector: 'onBoard-root',
   templateUrl: './app.component.html',
@@ -16,14 +17,16 @@ declare let chrome: any;
   providers: [MdDialog, PouchDBService, DownloadService, CommonService, QuerySelectorService, { provide: Window, useValue: window }, MessagingService]
 })
 export class AppComponent implements OnInit {
-
+  private readonly journeyIdentifier:string = "";
   journeyStep: Step;
   lastDialogResult: string;
   config: MdDialogConfig;
   msgPort: any;
 
   constructor( @Inject(DOCUMENT) private document: Document, @Inject(Window) private _window: Window, private _dialog: MdDialog, private _pouchDbService: PouchDBService
-    , private _downloadService: DownloadService, private _commonService: CommonService, private _docQuerySVC: QuerySelectorService, private _msgSVC: MessagingService) { }
+    , private _downloadService: DownloadService, private _commonService: CommonService, private _docQuerySVC: QuerySelectorService, private _msgSVC: MessagingService) {
+      this.journeyIdentifier = "JOURNEY_IDENTIFIER";
+     }
 
   ngOnInit(): void {
     let msg = this._msgSVC.receiveMessage();
@@ -42,6 +45,11 @@ export class AppComponent implements OnInit {
     let dialogRef = this._dialog.open(JourneyDialogComponent, this.config);
     dialogRef.afterClosed().subscribe((result: Step | string) => {
       if (result !== null && result !== "cancel") {
+        if(!this._window.sessionStorage.getItem(this.journeyIdentifier)){
+            this._window.sessionStorage.setItem(this.journeyIdentifier,this.journeyStep.journeyId);
+          }else{
+            this.journeyStep.journeyId = this._window.sessionStorage.getItem(this.journeyIdentifier);
+          }
         let response = this._msgSVC.sendMessage<Step>("NEW_JOURNEY", this.journeyStep);
         response.then((result) => {
           console.log("response received from background as save to db ", result);
@@ -54,8 +62,9 @@ export class AppComponent implements OnInit {
 
   downloadJourney() {
     // let journey = this._pouchDbService.get(this._commonService.parseURI(window.location.href));
-    let journey = this._msgSVC.sendMessage("GET_JOURNEY",this._commonService.parseURI(this._window.location.href));
+    let journey = this._msgSVC.sendMessage("GET_JOURNEY",this._window.sessionStorage.getItem(this.journeyIdentifier));
     journey.then((result: any) => {
+      this._window.sessionStorage.removeItem(this.journeyIdentifier);
       console.log("download soon",result);
     });
   }
