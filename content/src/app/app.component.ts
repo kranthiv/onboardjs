@@ -41,12 +41,13 @@ export class AppComponent implements OnInit {
     this.journeyStep.target = this._docQuerySVC.generateSelector(range.commonAncestorContainer.parentElement);
     this.config = new MdDialogConfig();
     this.config.data = this.journeyStep;
+    this.config.disableClose = true;
     let dialogRef = this._dialog.open(JourneyDialogComponent, this.config);
     dialogRef.afterClosed().subscribe((result: Step | string) => {
       if (result !== null && result !== "cancel") {
         let response = this._msgSVC.sendMessage<Step>("newJourney", this.journeyStep);
         response.then((result) => {
-          console.log("save to db", result);
+          console.log("response received from background as save to db ", result);
         });
         let save = this._pouchDbService.put(this.journeyStep.id, this.journeyStep);
 

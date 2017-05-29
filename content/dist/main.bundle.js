@@ -134,6 +134,16 @@ var MessagingService = (function () {
             }
         });
     };
+    MessagingService.prototype.receiveMessage = function () {
+        return new Promise(function (resolve, reject) {
+            try {
+                chrome.runtime.onConnect.addListener(function (port) {
+                });
+            }
+            catch (ex) {
+            }
+        });
+    };
     MessagingService.prototype.sendMessage = function (name, data) {
         var _this = this;
         return this.initilize().then(function () {
@@ -566,12 +576,13 @@ var AppComponent = (function () {
         this.journeyStep.target = this._docQuerySVC.generateSelector(range.commonAncestorContainer.parentElement);
         this.config = new __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdDialogConfig */]();
         this.config.data = this.journeyStep;
+        this.config.disableClose = true;
         var dialogRef = this._dialog.open(__WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__["a" /* JourneyDialogComponent */], this.config);
         dialogRef.afterClosed().subscribe(function (result) {
             if (result !== null && result !== "cancel") {
                 var response = _this._msgSVC.sendMessage("newJourney", _this.journeyStep);
                 response.then(function (result) {
-                    console.log("save to db", result);
+                    console.log("response received from background as save to db ", result);
                 });
                 var save = _this._pouchDbService.put(_this.journeyStep.id, _this.journeyStep);
                 save.then(function (result) {

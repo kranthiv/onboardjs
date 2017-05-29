@@ -10,9 +10,15 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chrome": "0.0.46",
+    "@types/pouchdb": "^6.1.0",
+    "rxjs": "^5.4.0",
     "source-map-loader": "^0.2.1",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1"
+  },
+  "dependencies": {
+    "pouchdb": "^6.2.0",
+    "rxjs": "^5.4.0"
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Observable,Observer,Subject}  from 'rxjs'
 
 declare let chrome: any;
 @Injectable()
@@ -14,6 +15,18 @@ export class MessagingService {
         resolve(this.port);
       } catch (ex) {
         reject(ex);
+      }
+    });
+  }
+
+  receiveMessage(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+          chrome.runtime.onConnect.addListener((port)=>{
+            
+          });
+      } catch (ex) {
+
       }
     });
   }
