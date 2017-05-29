@@ -6,4 +6,5 @@ let chromeSVC = new ChromeService();
 chromeSVC.initilizeApp();
 
 let msgSVC = new MessagingService();
+msgSVC.initilize();
 msgSVC.receiveMessage();

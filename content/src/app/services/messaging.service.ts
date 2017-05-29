@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import {Observable,Observer,Subject}  from 'rxjs'
+import { Observable, Observer, Subject } from 'rxjs';
+import { DownloadService } from './download.service';
 
 declare let chrome: any;
 @Injectable()
 export class MessagingService {
 
   port: any;
-  constructor() { }
+  constructor(private _downloadSVC: DownloadService) { }
 
   initilize(): Promise<any> {
     return new Promise<boolean>((resolve, reject) => {
       try {
         this.port = chrome.runtime.connect({ name: "onboard" });
+        this.receiveMessage();
         resolve(this.port);
       } catch (ex) {
         reject(ex);
@@ -19,18 +21,16 @@ export class MessagingService {
     });
   }
 
-  receiveMessage(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-          chrome.runtime.onConnect.addListener((port)=>{
-            if(port.name === 'onboard'){
-              this.port = port;
-            }
-          });
-      } catch (ex) {
-
-      }
-    });
+  receiveMessage() {
+    try {
+      this.port.onMessage.addListener((msg) => {
+        console.log("receied msg for downloading", msg);
+        if (msg.type === 'DOWNLOAD_JOURNEY') {
+          this._downloadSVC.downloadJSON<any>(msg.data);
+        }
+      });
+    } catch (ex) {
+    }
   }
 
   sendMessage<T>(name: string, data: T): Promise<boolean> {

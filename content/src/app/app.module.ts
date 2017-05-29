@@ -7,6 +7,7 @@ import {MaterialModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { JourneyDialogComponent } from './components/journey-dialog/journey-dialog.component';
+import {DownloadService} from './services/download.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { JourneyDialogComponent } from './components/journey-dialog/journey-dial
     MaterialModule.forRoot()
   ],
   entryComponents:[JourneyDialogComponent],
-  providers: [],
+  providers: [DownloadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

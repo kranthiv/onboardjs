@@ -6,7 +6,8 @@
         "default_title": "onboard"
     },
     "background": {
-        "scripts": ["background/dist/main.js"]
+        "scripts": ["background/dist/main.js"],
+        "persistent": true
     },
     "permissions": [
         "contextMenus",

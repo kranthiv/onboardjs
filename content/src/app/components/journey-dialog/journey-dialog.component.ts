@@ -25,6 +25,4 @@ export class JourneyDialogComponent implements OnInit {
     this.placements.push("top");
     this.placements.push("bottom");
   }
-
-
 }

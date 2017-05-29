@@ -5,7 +5,7 @@ import {DOCUMENT} from '@angular/platform-browser';
 export class DownloadService {
 
   constructor(@Inject(DOCUMENT) private document:Document) { }
-  downloadJSON<T>(data: T, fileName: string): boolean {
+  downloadJSON<T>(data: T, fileName?: string): boolean {
 
     let _data: string = "";
     if (!data) {
@@ -18,7 +18,7 @@ export class DownloadService {
     if (typeof data === "object") {
       _data = JSON.stringify(data, undefined, 4)
     }
-    let blob = new Blob([data], { type: 'text/json' }),
+    let blob = new Blob([_data], { type: 'text/json' }),
       e = this.document.createEvent('MouseEvents'),
       a = this.document.createElement('a');
     a.download = fileName;

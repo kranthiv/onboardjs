@@ -1,14 +1,17 @@
 import * as pouchDB from 'pouchdb';
+import { Step } from "../models/step.model";
+import { Journey } from "../models/journey.model";
 
 export class PouchdbService {
 
   private isInstantiated: boolean;
   private database: PouchDB.Database<any>;
   private data: any;
+  private journey:Journey;
   constructor() {
     if (!this.isInstantiated) {
       this.database = new pouchDB("onboard");
-      console.log(this.database);
+      console.log("database created",this.database);
       this.isInstantiated = true;
     }
   }
@@ -21,14 +24,22 @@ export class PouchdbService {
     return this.database.get(id);
   }
 
-  put(document: any): Promise<PouchDB.Core.Response> {
-    return this.get(document.id).then(result => {
-      document._rev = result._rev;
-      document._id = result._id;
-      return this.database.put(document);
+  put(document: Step): Promise<PouchDB.Core.Response> {
+    return this.get(document.journeyId).then(result => {
+      console.log(result);
+      this.journey = new Journey();
+      this.journey._rev = result._rev;
+      this.journey._id = result._id;
+      this.journey.id = result._id;
+      this.journey.steps.push(...result.steps, document);
+      return this.database.put(this.journey);
     }, error => {
       if (error.status === 404) {
-        return this.database.post(document);
+        this.journey = new Journey();
+        this.journey.steps.push(document);
+        this.journey.id = document.journeyId;
+        this.journey._id = document.journeyId;
+        return this.database.put(this.journey);
       } else {
         return new Promise((resolve, reject) => reject(error));
       }

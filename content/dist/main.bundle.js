@@ -4,6 +4,26 @@ webpackJsonp([1,4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Step; });
+var Step = (function () {
+    function Step() {
+        this.title = "";
+        this.content = "";
+        this.target = "";
+        this.placement = "";
+        this.journeyId = "";
+    }
+    return Step;
+}());
+
+//# sourceMappingURL=step.js.map
+
+/***/ }),
+
+/***/ 101:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommonService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -38,68 +58,11 @@ var CommonService = (function () {
     return CommonService;
 }());
 CommonService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
     __metadata("design:paramtypes", [])
 ], CommonService);
 
 //# sourceMappingURL=common.service.js.map
-
-/***/ }),
-
-/***/ 101:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(8);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DownloadService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-var DownloadService = (function () {
-    function DownloadService(document) {
-        this.document = document;
-    }
-    DownloadService.prototype.downloadJSON = function (data, fileName) {
-        var _data = "";
-        if (!data) {
-            console.error('Console.save: No data');
-            return;
-        }
-        if (!fileName)
-            fileName = 'journey.json';
-        if (typeof data === "object") {
-            _data = JSON.stringify(data, undefined, 4);
-        }
-        var blob = new Blob([data], { type: 'text/json' }), e = this.document.createEvent('MouseEvents'), a = this.document.createElement('a');
-        a.download = fileName;
-        a.href = window.URL.createObjectURL(blob);
-        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(e);
-        console.log("downlod initilized", _data);
-        return true;
-    };
-    return DownloadService;
-}());
-DownloadService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])),
-    __metadata("design:paramtypes", [Object])
-], DownloadService);
-
-//# sourceMappingURL=download.service.js.map
 
 /***/ }),
 
@@ -108,6 +71,7 @@ DownloadService = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__download_service__ = __webpack_require__(36);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagingService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -119,14 +83,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var MessagingService = (function () {
-    function MessagingService() {
+    function MessagingService(_downloadSVC) {
+        this._downloadSVC = _downloadSVC;
     }
     MessagingService.prototype.initilize = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             try {
                 _this.port = chrome.runtime.connect({ name: "onboard" });
+                _this.receiveMessage();
                 resolve(_this.port);
             }
             catch (ex) {
@@ -136,17 +103,16 @@ var MessagingService = (function () {
     };
     MessagingService.prototype.receiveMessage = function () {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            try {
-                chrome.runtime.onConnect.addListener(function (port) {
-                    if (port.name === 'onboard') {
-                        _this.port = port;
-                    }
-                });
-            }
-            catch (ex) {
-            }
-        });
+        try {
+            this.port.onMessage.addListener(function (msg) {
+                console.log("receied msg for downloading", msg);
+                if (msg.type === 'DOWNLOAD_JOURNEY') {
+                    _this._downloadSVC.downloadJSON(msg.data);
+                }
+            });
+        }
+        catch (ex) {
+        }
     };
     MessagingService.prototype.sendMessage = function (name, data) {
         var _this = this;
@@ -165,10 +131,11 @@ var MessagingService = (function () {
     return MessagingService;
 }());
 MessagingService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
-    __metadata("design:paramtypes", [])
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__download_service__["a" /* DownloadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__download_service__["a" /* DownloadService */]) === "function" && _a || Object])
 ], MessagingService);
 
+var _a;
 //# sourceMappingURL=messaging.service.js.map
 
 /***/ }),
@@ -178,7 +145,7 @@ MessagingService = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_journey__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_journey__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pouchdb__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pouchdb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pouchdb__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PouchDBService; });
@@ -232,7 +199,7 @@ var PouchDBService = (function () {
     return PouchDBService;
 }());
 PouchDBService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
     __metadata("design:paramtypes", [])
 ], PouchDBService);
 
@@ -347,8 +314,8 @@ var QuerySelectorService = (function () {
     return QuerySelectorService;
 }());
 QuerySelectorService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Injectable */])(),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["b" /* DOCUMENT */])),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Inject */])(__WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["b" /* DOCUMENT */])),
     __metadata("design:paramtypes", [Object])
 ], QuerySelectorService);
 
@@ -426,12 +393,69 @@ module.exports = "<form class=\"form\" #journeyDialog=\"ngForm\">\r\n  <md-input
 /***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(89);
+module.exports = __webpack_require__(90);
 
 
 /***/ }),
 
-/***/ 64:
+/***/ 36:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(8);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DownloadService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+var DownloadService = (function () {
+    function DownloadService(document) {
+        this.document = document;
+    }
+    DownloadService.prototype.downloadJSON = function (data, fileName) {
+        var _data = "";
+        if (!data) {
+            console.error('Console.save: No data');
+            return;
+        }
+        if (!fileName)
+            fileName = 'journey.json';
+        if (typeof data === "object") {
+            _data = JSON.stringify(data, undefined, 4);
+        }
+        var blob = new Blob([_data], { type: 'text/json' }), e = this.document.createEvent('MouseEvents'), a = this.document.createElement('a');
+        a.download = fileName;
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+        console.log("downlod initilized", _data);
+        return true;
+    };
+    return DownloadService;
+}());
+DownloadService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])),
+    __metadata("design:paramtypes", [Object])
+], DownloadService);
+
+//# sourceMappingURL=download.service.js.map
+
+/***/ }),
+
+/***/ 65:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -467,12 +491,12 @@ var JourneyDialogComponent = (function () {
     return JourneyDialogComponent;
 }());
 JourneyDialogComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* Component */])({
         selector: 'app-journey-dialog',
         template: __webpack_require__(172),
         styles: [__webpack_require__(165)]
     }),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Optional */])()), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MD_DIALOG_DATA */])),
+    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* Optional */])()), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MD_DIALOG_DATA */])),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MdDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MdDialogRef */]) === "function" && _a || Object, Object])
 ], JourneyDialogComponent);
 
@@ -481,7 +505,7 @@ var _a;
 
 /***/ }),
 
-/***/ 88:
+/***/ 89:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -490,19 +514,19 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 88;
+webpackEmptyContext.id = 89;
 
 
 /***/ }),
 
-/***/ 89:
+/***/ 90:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(105);
 
 
@@ -516,19 +540,19 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 /***/ }),
 
-/***/ 96:
+/***/ 97:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_common_service__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_download_service__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_common_service__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_download_service__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__models_step__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__models_step__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__ = __webpack_require__(102);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -565,14 +589,7 @@ var AppComponent = (function () {
         this._msgSVC = _msgSVC;
     }
     AppComponent.prototype.ngOnInit = function () {
-        // let msg = this._msgSVC.initilize().then((port) => {
-        //   this.msgPort = port;
-        //   console.log("port details", port);
-        // });
         var msg = this._msgSVC.receiveMessage();
-        msg.then(function (port) {
-            console.log("successfully connected to background from conent", port);
-        });
     };
     AppComponent.prototype.openDialog = function () {
         var _this = this;
@@ -581,22 +598,16 @@ var AppComponent = (function () {
         this.journeyStep.title = selection.toString();
         var range = selection.getRangeAt(0);
         this.journeyStep.target = this._docQuerySVC.generateSelector(range.commonAncestorContainer.parentElement);
+        this.journeyStep.journeyId = this._commonService.parseURI(this._window.location.href);
         this.config = new __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdDialogConfig */]();
         this.config.data = this.journeyStep;
         this.config.disableClose = true;
         var dialogRef = this._dialog.open(__WEBPACK_IMPORTED_MODULE_8__components_journey_dialog_journey_dialog_component__["a" /* JourneyDialogComponent */], this.config);
         dialogRef.afterClosed().subscribe(function (result) {
             if (result !== null && result !== "cancel") {
-                var response = _this._msgSVC.sendMessage("newJourney", _this.journeyStep);
+                var response = _this._msgSVC.sendMessage("NEW_JOURNEY", _this.journeyStep);
                 response.then(function (result) {
                     console.log("response received from background as save to db ", result);
-                });
-                var save = _this._pouchDbService.put(_this.journeyStep.id, _this.journeyStep);
-                save.then(function (result) {
-                    console.info("saved to the indexdb");
-                });
-                save.catch(function (error) {
-                    console.error(error);
                 });
             }
             else {
@@ -605,23 +616,22 @@ var AppComponent = (function () {
         });
     };
     AppComponent.prototype.downloadJourney = function () {
-        var _this = this;
-        var name = this._commonService.parseURI(window.location.href);
-        var journey = this._pouchDbService.get(this._commonService.parseURI(window.location.href));
+        // let journey = this._pouchDbService.get(this._commonService.parseURI(window.location.href));
+        var journey = this._msgSVC.sendMessage("GET_JOURNEY", this._commonService.parseURI(this._window.location.href));
         journey.then(function (result) {
-            _this._downloadService.downloadJSON(JSON.stringify(result), name + ".json");
+            console.log("download soon", result);
         });
     };
     return AppComponent;
 }());
 AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* Component */])({
         selector: 'onBoard-root',
         template: __webpack_require__(171),
         styles: [__webpack_require__(164)],
         providers: [__WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */], __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */], __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */], __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */], { provide: Window, useValue: window }, __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */]]
     }),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Inject */])(Window)),
+    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["b" /* DOCUMENT */])), __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Inject */])(Window)),
     __metadata("design:paramtypes", [Object, Object, typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MdDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_pouch_db_service__["a" /* PouchDBService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_download_service__["a" /* DownloadService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_common_service__["a" /* CommonService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_query_selector_service__["a" /* QuerySelectorService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__services_messaging_service__["a" /* MessagingService */]) === "function" && _f || Object])
 ], AppComponent);
 
@@ -630,18 +640,19 @@ var _a, _b, _c, _d, _e, _f;
 
 /***/ }),
 
-/***/ 97:
+/***/ 98:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser_animations__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser_animations__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_journey_dialog_journey_dialog_component__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_journey_dialog_journey_dialog_component__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_download_service__ = __webpack_require__(36);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -652,6 +663,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -682,7 +694,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MaterialModule */].forRoot()
         ],
         entryComponents: [__WEBPACK_IMPORTED_MODULE_7__components_journey_dialog_journey_dialog_component__["a" /* JourneyDialogComponent */]],
-        providers: [],
+        providers: [__WEBPACK_IMPORTED_MODULE_8__services_download_service__["a" /* DownloadService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     }),
     __metadata("design:paramtypes", [])
@@ -692,7 +704,7 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 98:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -723,42 +735,6 @@ var Journey = (function () {
 }());
 
 //# sourceMappingURL=journey.js.map
-
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Step; });
-var Step = (function () {
-    function Step() {
-        this.title = "";
-        this.content = "";
-        this.target = "";
-        this.placement = "";
-        this.id = this.parseURI(window.location.href);
-    }
-    Step.prototype.parseURI = function (url) {
-        var _url = new URL(url);
-        var unique = "";
-        if (_url === undefined) {
-            console.error("url is on wrong format", url);
-            return "ERROR";
-        }
-        if (_url.hostname) {
-            unique = _url.hostname.replace(/\./g, "_").replace(/\//g, "_");
-        }
-        if (_url.pathname) {
-            var pathName = _url.pathname.replace(/\./g, "_").replace(/\//g, "_");
-            unique = unique + "_" + pathName;
-        }
-        return unique;
-    };
-    return Step;
-}());
-
-//# sourceMappingURL=step.js.map
 
 /***/ })
 
