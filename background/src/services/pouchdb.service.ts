@@ -23,7 +23,9 @@ export class PouchdbService {
   get(id: string): Promise<any> {
     return this.database.get(id);
   }
-
+  deleteDB(documentId:string,revId:string): Promise<PouchDB.Core.Response>{
+    return this.database.remove(documentId,revId);
+  }
   put(document: Step): Promise<PouchDB.Core.Response> {
     return this.get(document.journeyId).then(result => {
       console.log(result);

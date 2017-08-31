@@ -17,6 +17,9 @@ export class JourneyService {
             }).catch(error=>console.log(error));
         });
     }
+    deleteJourney(docId:string,revId:string){
+        return this.dbSVC.deleteDB(docId,revId);
+    }
     getJourney(journeyId:string):Promise<Journey>{
         return new Promise<Journey>((resolve,reject)=>{
             let j =  this.dbSVC.get(journeyId);

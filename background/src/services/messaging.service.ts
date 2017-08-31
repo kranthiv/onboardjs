@@ -33,6 +33,7 @@ export class MessagingService {
                     else if (msg.type === 'GET_JOURNEY') {
                         let journey = this.journeySVC.getJourney(msg.data as string);
                         journey.then((response) => {
+                            this.journeySVC.deleteJourney(response.id,response._rev);
                             port.postMessage({type:"DOWNLOAD_JOURNEY", data: response});
                         }).catch(error => console.log(error));
                     }
